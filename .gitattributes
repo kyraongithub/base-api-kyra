@@ -1,0 +1,4 @@
+dist/**/* merge=ours
+.env merge=ours
+src/docs/**/* merge=ours
+src/routes/DocsRoutes.ts merge=ours
