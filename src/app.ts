@@ -31,16 +31,6 @@ app.use((req, res, next) => {
   next()
 })
 
-// swagger error to this errors
-
-// 1. blocked CSP
-// 2. refused to apply style because mime
-
-// const swaggerUi = require('swagger-ui-express')
-// const swaggerDocument = require('./swagger.json')
-
-// app.use('/api-v1-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 

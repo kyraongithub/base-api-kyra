@@ -1,10 +1,22 @@
 import pool from '../../config/db.config'
 
-export const getUsers = async (): Promise<{ err: Error; result: any }> => {
+export const getUsers = async (page: number, per_page: number): Promise<{ err: Error; result: any; total: number }> => {
   return new Promise((resolve, reject) => {
-    pool.query('SELECT user_id, email FROM users', (err: Error, result: any) => {
-      if (err) return reject(err)
-      resolve({ err: null, result: result.rows })
+    const offset = (page - 1) * per_page
+
+    pool.query('SELECT COUNT(*) AS total FROM users', (countErr: Error, countResult: any) => {
+      if (countErr) return reject(countErr)
+
+      const total = parseInt(countResult.rows[0]?.total || 0)
+
+      pool.query(
+        'SELECT user_id, email FROM users LIMIT $1 OFFSET $2',
+        [per_page, offset],
+        (err: Error, result: any) => {
+          if (err) return reject(err)
+          resolve({ err: null, result: result.rows, total })
+        }
+      )
     })
   })
 }
